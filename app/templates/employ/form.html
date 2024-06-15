@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-xl">
+    <h1 class="app-page-title mb-4">Tambah Calon Karyawan</h1>
+    <form class="auth-form add-candidate-form" method="post" action="{{ url_for('main.add_candidate') }}">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {{ form.hidden_tag() }}         
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="nama_akun" class="form-label">Nama Akun</label>
+                    {{ form.nama_akun(class_='form-control') }}
+                </div><!--//form-group-->
+            </div><!--//col-md-6-->
+        
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="kode" class="form-label">Kode</label>
+                    {{ form.kode(class_='form-control', readonly='true') }}
+                </div><!--//form-group-->
+            </div><!--//col-md-6-->
+        </div><!--//row-->
+
+            <div class="text-center">
+                {{ form.submit(class_='btn app-btn-primary w-100 theme-btn mx-auto') }}
+            </div><!--//text-center-->
+        </div>
+    </form>
+</div><!--//container-fluid-->
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-xl">
+    <div class="row g-3 mb-4 align-items-center justify-content-between">
+        <div class="col-auto">
+            <h1 class="app-page-title mb-0">Data Calon Karyawan</h1>
+        </div>
+        <div class="col-auto">
+             <div class="page-utilities">
+                <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+                    <div class="col-auto">
+                        <form class="table-search-form row gx-1 align-items-center">
+                            <div class="col-auto">
+                                <input type="text" id="search-orders" name="searchorders" class="form-control search-orders" placeholder="Search">
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn app-btn-secondary">Search</button>
+                            </div>
+                        </form>
+                    </div><!--//col-->
+
+                    <div class="col-auto">						    
+                        <a class="btn app-btn-secondary" href="{{ url_for('main.add_candidate')}}">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus me-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v6.5h6.5a.5.5 0 0 1 0 1H8.5v6.5a.5.5 0 0 1-1 0V9H1a.5.5 0 0 1 0-1h6.5V1.5A.5.5 0 0 1 8 1z"/>
+                              </svg>                              
+                            Tambah Kandidat
+                        </a>
+                    </div>
+                </div><!--//row-->
+            </div><!--//table-utilities-->
+        </div><!--//col-auto-->
+    </div><!--//row-->
+
+    {% set orders_all_tab_active = '' %}
+    {% set orders_paid_tab_active = '' %}
+    {% set orders_cancelled_tab_active = '' %}
+
+    {% if status_tab == 'all' %}
+        {% set orders_all_tab_active = 'active' %}
+        {% set orders_paid_tab_active = '' %}
+        {% set orders_cancelled_tab_active = '' %}
+    {% elif status_tab == 'selesai' %}
+        {% set orders_all_tab_active = '' %}
+        {% set orders_paid_tab_active = 'active' %}
+        {% set orders_cancelled_tab_active = '' %}
+    {% elif status_tab == 'belum_selesai' %}
+        {% set orders_all_tab_active = '' %}
+        {% set orders_paid_tab_active = '' %}
+        {% set orders_cancelled_tab_active = 'active' %}
+    {% endif %}
+
+    <nav id="orders-table-tab" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
+        <a class="flex-sm-fill text-sm-center nav-link {{ orders_all_tab_active }}" id="orders-all-tab" data-bs-toggle="tab" href="#orders-all" role="tab" aria-controls="orders-all" aria-selected="{{ 'true' if status_tab == 'all' else 'false' }}">Semua</a>
+        <a class="flex-sm-fill text-sm-center nav-link {{ orders_paid_tab_active }}" id="orders-paid-tab" data-bs-toggle="tab" href="#orders-paid" role="tab" aria-controls="orders-paid" aria-selected="{{ 'true' if status_tab == 'selesai' else 'false' }}">Selesai</a>
+        <a class="flex-sm-fill text-sm-center nav-link {{ orders_cancelled_tab_active }}" id="orders-cancelled-tab" data-bs-toggle="tab" href="#orders-cancelled" role="tab" aria-controls="orders-cancelled" aria-selected="{{ 'true' if status_tab == 'belum_selesai' else 'false' }}">Belum Selesai</a>
+    </nav>
+    
+    <div class="tab-content" id="orders-table-tab-content">
+        <div class="tab-pane fade show active" id="{{ tab_id }}" role="tabpanel" aria-labelledby="{{ tab_label_id }}">
+            <div class="app-card app-card-orders-table shadow-sm mb-5">
+                <div class="app-card-body">
+                    <div class="table-responsive">
+                        <table class="table app-table-hover mb-0 text-left">
+                            <thead>
+                                <tr>
+                                    <th class="cell">No. Kandidat</th>
+                                    <th class="cell">Nama</th>
+                                    <th class="cell">Kode</th>
+                                    <th class="cell">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for candidate in candidates %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ candidate[1] }}</td>
+                                    <td>{{ candidate[2] }}</td>
+                                    <td class="cell">
+                                        {% if candidate.status == 1 %}
+                                            <span class="badge bg-success">Selesai</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Belum selesai</span>
+                                        {% endif %}
+                                    </td>                                    
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div><!--//table-responsive-->   
+                </div><!--//app-card-body-->		
+            </div><!--//app-card-->
+            <nav class="app-pagination">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav><!--//app-pagination-->           
+        </div><!--//tab-pane-->
+    </div><!--//tab-content-->
+</div><!--//container-fluid-->
+{% endblock %}
