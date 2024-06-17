@@ -1,6 +1,7 @@
 from flask_login import UserMixin
 from app import mysql, login_manager, bcrypt
 import logging
+import uuid
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -53,20 +54,50 @@ def load_user(user_id):
     return None
 
 class Candidate():
-    def __init__(self, id, nama_akun, kode, status):
+    def __init__(self, id, nama_akun, kode, status, uuid):
         self.id = id
         self.nama_akun = nama_akun
         self.kode = kode
         self.status = status
+        self.uuid = uuid
 
     @staticmethod
-    def create(nama_akun, kode, status):
+    def create(nama_akun, kode, status, uuid):
         try:
             cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO candidate (nama_akun, kode, status) VALUES (%s, %s, %s)", (nama_akun, kode, status))
+            cur.execute("INSERT INTO candidate (nama_akun, kode, status, uuid) VALUES (%s, %s, %s, %s)", (nama_akun, kode, status, uuid))
             mysql.connection.commit()
             cur.close()
             logging.debug("Candidate created successfully")
         except Exception as e:
             logging.error(f"Error: {e}")
             mysql.connection.rollback()
+
+class Question():
+    def __init__(self, id, fitur, pertanyaan):
+        self.id = id
+        self.fitur = fitur
+        self.pertanyaan = pertanyaan
+
+    @staticmethod
+    def create(fitur, pertanyaan):
+        try:
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO question (fitur, pertanyaan) VALUES (%s, %s)", (fitur, pertanyaan))
+            mysql.connection.commit()
+            cur.close()
+            logging.debug("Question created successfully")
+        except Exception as e:
+            logging.error(f"Error: {e}")
+            mysql.connection.rollback()
+
+    def get_question(page, per_page):
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT COUNT(*) FROM question")
+        total_rows = cur.fetchone()[0]
+        
+        cur.execute("SELECT * FROM question LIMIT %s OFFSET %s", (per_page, (page - 1) * per_page))
+        question = cur.fetchall()
+        
+        cur.close()
+        return question, total_rows

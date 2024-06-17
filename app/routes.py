@@ -2,8 +2,8 @@ from flask import render_template, request, redirect, url_for, Blueprint, flash,
 from datetime import datetime
 from flask_login import login_user, current_user, logout_user, login_required
 from app import mysql, bcrypt
-from app.forms import RegistrationForm, LoginForm, AddCandidateForm
-from app.models import User, Candidate
+from app.forms import RegistrationForm, LoginForm, AddCandidateForm, AddQuestionForm
+from app.models import User, Candidate, Question
 import uuid
 import pytz
 
@@ -65,7 +65,7 @@ def user():
     cur.execute("SELECT * FROM users")
     data = cur.fetchall()
     cur.close()
-    return render_template('user/index.html', users=data)
+    return render_template('user/index.html', users=data, title='Data Pengguna')
 
 @main.route('/karyawan')
 @login_required
@@ -74,16 +74,19 @@ def candidate():
     cur.execute("SELECT id, nama_akun, kode, status FROM candidate")
     data = cur.fetchall()
     cur.close()
-    return render_template('employ/index.html', candidates=data)
+    return render_template('employ/index.html', candidates=data, title='Data Calon Karyawan')
 
 @main.route("/tambah_kandidat", methods=['GET', 'POST'])
 def add_candidate():
     form = AddCandidateForm()
     form.generate_kode()
     if form.validate_on_submit():
-        Candidate.create(form.nama_akun.data, form.kode.data, form.status.data)
+        form.generate_kode() 
+        candidate_uuid = 'user_' + str(uuid.uuid4())
+        form.uuid.data = candidate_uuid
+        Candidate.create(form.nama_akun.data, form.kode.data, form.status.data, form.uuid.data)
         session['flash_message'] = ('Kandidat berhasil ditambahkan!', 'success')
-        return redirect(url_for('main.employ'))  # Ganti 'index' dengan nama fungsi route halaman utama aplikasi Anda
+        return redirect(url_for('main.candidate'))
     return render_template('employ/form.html', title='Tambah Kandidat', form=form)
 
 @main.route('/form')
@@ -99,7 +102,7 @@ def form():
 @login_required
 def detail_form():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM answer JOIN question ON question.id=answer.question_id JOIN candidate ON candidate.id=answer.candidate_id")
+    cur.execute("SELECT * FROM answer JOIN candidate ON candidate.id=answer.candidate_id")
     data = cur.fetchall()
     cur.close()
     return render_template('form/index.html', forms=data)
@@ -107,7 +110,20 @@ def detail_form():
 @main.route('/question')
 @login_required
 def question():
-    return render_template('question/index.html')
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 5, type=int) 
+    question, total_rows = Question.get_question(page, per_page)
+    total_pages = total_rows // per_page + (1 if total_rows % per_page > 0 else 0)
+    return render_template('question/index.html', question=question, page=page, per_page=per_page, total_pages=total_pages)
+
+@main.route("/tambah_pertanyaan", methods=['GET', 'POST'])
+def add_question():
+    form = AddQuestionForm()
+    if form.validate_on_submit():
+        Question.create(form.fitur.data, form.pertanyaan.data)
+        session['flash_message'] = ('Pertanyaan berhasil ditambahkan!', 'success')
+        return redirect(url_for('main.question'))  
+    return render_template('question/form.html', title='Tambah Pertanyaan', form=form)
 
 @main.route("/generate_user")
 @login_required

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container-xl">
     <h1 class="app-page-title mb-4">{{ title }}</h1>
-    <form class="auth-form add-candidate-form" method="post" action="{{ url_for('main.add_candidate') }}">
+    <form class="auth-form add-candidate-form" method="post" action="{{ url_for('main.add_question') }}">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -18,15 +18,15 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="mb-3">
-                    <label for="nama_akun" class="form-label">Nama Akun</label>
-                    {{ form.nama_akun(class_='form-control') }}
+                    <label for="kode_fitur" class="form-label">Kode Fitur</label>
+                    {{ form.fitur(class_='form-select') }}
                 </div><!--//form-group-->
             </div><!--//col-md-6-->
         
             <div class="col-md-6">
                 <div class="mb-3">
-                    <label for="kode" class="form-label">Kode</label>
-                    {{ form.kode(class_='form-control', readonly='true') }}
+                    <label for="kode" class="form-label">Pertanyaan</label>
+                    {{ form.pertanyaan(class_='form-control', id='pertanyaan') }}
                 </div><!--//form-group-->
             </div><!--//col-md-6-->
         </div><!--//row-->
@@ -37,4 +37,14 @@
         </div>
     </form>
 </div><!--//container-fluid-->
+<style>
+    textarea#pertanyaan {
+    min-height: 100px; /* Tinggi minimal textarea */
+    height: auto; /* Mengisi tinggi sesuai dengan konten */
+    resize: vertical; /* Memastikan textarea hanya bisa diresize secara vertikal */
+    padding: 10px; /* Padding untuk meningkatkan kenyamanan pengguna */
+    font-size: 14px; /* Ukuran font */
+    line-height: 1.5; /* Jarak antar baris */
+}
+</style>
 {% endblock %}
