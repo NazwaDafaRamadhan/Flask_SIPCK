@@ -1,0 +1,193 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-xl">
+    <h1 class="app-page-title mb-4">{{ title }}</h1>
+    <form class="auth-form add-candidate-form" method="post" action="{{ url_for('main.add_candidate') }}">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="row g-3 mb-4 align-items-center justify-content-between">
+            <div class="col-auto">
+                <h1 class="app-page-title mb-0">Biodata Calon Karyawan</h1>
+            </div>
+        </div><!--//row-->
+        
+        {{ form.hidden_tag() }}         
+        <div class="mb-3">
+            <label for="nama_akun" class="form-label">Nama Lengkap</label>
+            {{ form.nama_kandidat(class_='form-control') }}
+        </div>
+
+        <div class="mb-3">
+            <label for="nama_akun" class="form-label">Alamat</label>
+            {{ form.alamat(class_='form-control') }}
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="nama_akun" class="form-label">No Telepon</label>
+                    {% set prefixed_no_telp = '+62' + (form.no_telp.data | string) if form.no_telp.data else '' %}
+                    {{ form.no_telp(class_='form-control', value=prefixed_no_telp) }}
+                </div><!--//form-group-->
+            </div><!--//col-md-6-->
+        
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="kode" class="form-label">Email</label>
+                    {{ form.email_kandidat(class_='form-control', readonly='true') }}
+                </div><!--//form-group-->
+            </div><!--//col-md-6-->
+        </div><!--//row-->
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="nama_akun" class="form-label">Tanggal Lahir</label>
+                    {{ form.tgl_lahir(class_='form-control', id='tgl_lahir') }}
+                </div><!--//form-group-->
+            </div><!--//col-md-6-->
+        
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="kode" class="form-label">Jenis Kelamin</label>
+                    {{ form.j_kel(class_='form-control', readonly='true') }}
+                </div><!--//form-group-->
+            </div><!--//col-md-6-->
+        </div><!--//row-->
+
+        <div class="mb-3">
+            <label for="nama_akun" class="form-label">Pendidikan Terakhir</label>
+            {{ form.pendidikan(class_='form-control') }}
+        </div>
+
+        <div class="mb-3">
+            <label for="nama_akun" class="form-label">Posisi Yang Dilamar</label>
+            {{ form.posisi(class_='form-control') }}
+        </div>
+
+        <div class="mb-3">
+            <label for="nama_akun" class="form-label">Harapan Gaji</label>
+            {{ form.gaji(class_='form-control') }}
+        </div>
+
+        <div class="mb-3">
+            <label for="nama_akun" class="form-label">Hasil Identifikasi</label>
+            {{ form.hasil(class_='form-control', value={{ prediction }}) }}
+        </div>
+
+        <div class="row g-3 mb-4 align-items-center justify-content-between">
+            <div class="col-auto">
+                <h1 class="app-page-title mb-0">Hasil Interview Karyawan</h1>
+            </div>
+        </div><!--//row-->
+
+        <div class="mb-3">
+            <label for="pertanyaan1" class="form-label">1. {{ pertanyaan1 }}</label>
+            {{ form.opsi1(class_='form-control') }} </br>
+            {{ form.uraian1(class_='form-control', style='height:auto;') }}
+        </div>
+        <div class="mb-3">
+            <label for="pertanyaan2" class="form-label">2. {{ pertanyaan2 }}</label>
+            {{ form.opsi2(class_='form-control') }} </br>
+            {{ form.uraian2(class_='form-control', style='height:auto;') }}
+        </div>
+        <div class="mb-3">
+            <label for="pertanyaan3" class="form-label">3. {{ pertanyaan3 }}</label>
+            {{ form.opsi3(class_='form-control') }} </br>
+            {{ form.uraian3(class_='form-control', style='height:auto;') }}
+        </div>
+        <div class="mb-3">
+            <label for="pertanyaan4" class="form-label">4. {{ pertanyaan4 }}</label>
+            {{ form.opsi4(class_='form-control') }} </br>
+            {{ form.uraian4(class_='form-control', style='height:auto;') }}
+        </div>
+        <div class="mb-3">
+            <label for="pertanyaan5" class="form-label">5. {{ pertanyaan5 }}</label>
+            {{ form.opsi5(class_='form-control') }} </br>
+            {{ form.uraian5(class_='form-control', style='height:auto;') }}
+        </div>
+        <div class="mb-3">
+            <label for="pertanyaan6" class="form-label">6. {{ pertanyaan6 }}</label>
+            {{ form.opsi6(class_='form-control') }} </br>
+            {{ form.uraian6(class_='form-control', style='height:auto;') }}
+        </div>
+        <div class="mb-3">
+            <label for="pertanyaan7" class="form-label">7. {{ pertanyaan8 }}</label>
+            {{ form.opsi7(class_='form-control') }} </br>
+            {{ form.uraian7(class_='form-control', style='height:auto;') }}
+        </div>
+        <div class="mb-3">
+            <label for="pertanyaan8" class="form-label">8. {{ pertanyaan8 }}</label>
+            {{ form.opsi8(class_='form-control') }} </br>
+            {{ form.uraian8(class_='form-control', style='height:auto;') }}
+        </div>
+        <div class="mb-3">
+            <label for="pertanyaan9" class="form-label">9. {{ pertanyaan9 }}</label>
+            {{ form.opsi9(class_='form-control') }} </br>
+            {{ form.uraian10(class_='form-control', style='height:auto;') }}
+        </div>
+        <div class="mb-3">
+            <label for="pertanyaan10" class="form-label">10. {{ pertanyaan10 }}</label>
+            {{ form.opsi10(class_='form-control') }} </br>
+            {{ form.uraian10(class_='form-control', style='height:auto;') }}
+        </div>
+        <div class="mb-3">
+            <label for="pertanyaan11" class="form-label">11. {{ pertanyaan11 }}</label>
+            {{ form.opsi11(class_='form-control') }} </br>
+            {{ form.uraian11(class_='form-control', style='height:auto;') }}
+        </div>
+        <div class="mb-3">
+            <label for="pertanyaan12" class="form-label">12. {{ pertanyaan12 }}</label>
+            {{ form.opsi12(class_='form-control') }} </br>
+            {{ form.uraian12(class_='form-control', style='height:auto;') }}
+        </div>
+        <div class="mb-3">
+            <label for="pertanyaan13" class="form-label">13. {{ pertanyaan13 }}</label>
+            {{ form.opsi13(class_='form-control') }} </br>
+            {{ form.uraian13(class_='form-control', style='height:auto;') }}
+        </div>
+        <div class="mb-3">
+            <label for="pertanyaan14" class="form-label">14. {{ pertanyaan14 }}</label>
+            {{ form.opsi14(class_='form-control') }} </br>
+            {{ form.uraian14(class_='form-control', style='height:auto;') }}
+        </div>
+        <div class="mb-3">
+            <label for="pertanyaan15" class="form-label">15. {{ pertanyaan15 }}</label>
+            {{ form.opsi15(class_='form-control') }} </br>
+            {{ form.uraian15(class_='form-control', style='height:auto;') }}
+        </div>
+        <div class="mb-3">
+            <label for="pertanyaan16" class="form-label">16. {{ pertanyaan16 }}</label>
+            {{ form.opsi16(class_='form-control') }} </br>
+            {{ form.uraian16(class_='form-control', style='height:auto;') }}
+        </div>
+        <div class="mb-3">
+            <label for="pertanyaan17" class="form-label">17. {{ pertanyaan17 }}</label>
+            {{ form.opsi17(class_='form-control') }} </br>
+            {{ form.uraian17(class_='form-control', style='height:auto;') }}
+        </div>
+
+            <div class="text-center">
+                {{ form.submit(class_='btn app-btn-primary w-100 theme-btn mx-auto') }}
+            </div><!--//text-center-->
+        </div>
+    </form>
+</div><!--//container-fluid-->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var input = document.getElementById('tgl_lahir');
+        var tanggalStr = input.value;
+        var date = new Date(tanggalStr);
+        var options = { day: '2-digit', month: 'long', year: 'numeric' };
+        var formattedDate = date.toLocaleDateString('id-ID', options);
+        input.value = formatted

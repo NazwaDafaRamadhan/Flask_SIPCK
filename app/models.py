@@ -73,6 +73,15 @@ class Candidate():
             logging.error(f"Error: {e}")
             mysql.connection.rollback()
 
+    @staticmethod
+    def get_by_username(username):
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM users WHERE nama_akun = %s", (username,))
+        username = cur.fetchone()
+        if username:
+            return Candidate(username[0], username[1], username[2], username[3], username[13])
+        return None
+
 class Question():
     def __init__(self, id, fitur, pertanyaan):
         self.id = id

@@ -53,6 +53,18 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for data in data %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ data[1] }}</td>
+                                    <td>{{ data[2] }}</td>
+                                    <td>{{ data[3] }}</td>
+                                    <td>{{ data[4] if data[4] else 'Tertunda' }}</td>
+                                    <td class="cell" style="text-align: center;">
+                                        <a class="btn-sm app-btn-secondary" href="{{ url_for('main.view_form', id=data[5]) }}">Edit</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div><!--//table-responsive-->

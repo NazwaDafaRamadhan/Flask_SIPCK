@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Interview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Salsa&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href={{ url_for('static', filename='images/logo.png') }}> 
+</head>
+<body>
+    <div class="container">
+        <div class="form-box">
+            <div class="logo">
+                <div class="logo-circle">MJA</div>
+            </div>
+            <h2>Form Interview</h2>
+            <form>
+                <div class="form-group">
+                    <label for="bimbingan">Bagaimanakah bimbingan karier yang anda terima selama masa pendidikan?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="kurang" name="bimbingan" value="Kurang" required>
+                            <label for="kurang">Kurang</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="cukup" name="bimbingan" value="Cukup">
+                            <label for="cukup">Cukup</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="baik" name="bimbingan" value="Baik">
+                            <label for="baik">Baik</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="alasan">Mengapa demikian!</label>
+                    <textarea id="alasan" rows="5" placeholder="Jelaskan alasan Anda..." required></textarea>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Salsa', sans-serif;
+            background: url("{{ url_for('static', filename='images/background/background-3.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .form-box {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 30px 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .logo {
+            margin-bottom: 10px;
+        }
+
+        .logo-circle {
+            width: 80px;
+            height: 80px;
+            background-color: #61b15a;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            font-size: 32px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 24px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            font-size: 16px;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .radio-group {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+
+        .radio-item {
+            position: relative;
+        }
+
+        .radio-item input[type="radio"] {
+            display: none;
+        }
+
+        .radio-item label {
+            padding: 10px 20px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .radio-item input[type="radio"]:checked + label {
+            border-color: #61b15a;
+            background-color: #e6f9e6;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+
+        button {
+            padding: 12px 25px;
+            background-color: #61b15a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #4e9b47;
+        }
+
+        @media (max-width: 600px) {
+            .form-box {
+                padding: 20px 30px;
+            }
+
+            .logo-circle {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            label {
+                font-size: 14px;
+            }
+
+            .radio-group label {
+                font-size: 14px;
+            }
+
+            textarea {
+                font-size: 14px;
+            }
+
+            button {
+                font-size: 16px;
+            }
+        }
+
+    </style>
+</body>
+</html>
