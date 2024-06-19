@@ -113,13 +113,8 @@ def view_form(id):
     WHERE answer.candidate_id = %s
     """
     try:
-        # Debugging: cetak query dan parameter untuk memastikan mereka benar
-        print("Executing query:", query)
-        print("With parameter:", id)
-        
         cur.execute(query, (id,))
         data = cur.fetchall()
-        print(data)
         cur.close()
         
     except Exception as e:

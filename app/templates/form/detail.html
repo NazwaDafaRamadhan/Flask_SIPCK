@@ -81,7 +81,7 @@
 
         <div class="mb-3">
             <label for="nama_akun" class="form-label">Hasil Identifikasi</label>
-            {{ form.hasil(class_='form-control', value={{ prediction }}) }}
+            {{ form.hasil(class_='form-control', value=prediction) }}
         </div>
 
         <div class="row g-3 mb-4 align-items-center justify-content-between">
@@ -190,4 +190,7 @@
         var date = new Date(tanggalStr);
         var options = { day: '2-digit', month: 'long', year: 'numeric' };
         var formattedDate = date.toLocaleDateString('id-ID', options);
-        input.value = formatted
+        input.value = formattedDate;
+    });
+    </script>
+{% endblock %}
